@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Canon printer manifest",
+  "type": "object",
+  "required": ["version", "printers"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "updated": { "type": "string", "format": "date" },
+    "printers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["model", "family", "supportUrl"],
+        "properties": {
+          "model":      { "type": "string", "minLength": 1,
+                          "description": "Canon's exact model designator, e.g. TS3520, MF644Cdw, PRO-300." },
+          "family":     { "type": "string",
+                          "enum": ["PIXMA", "MAXIFY", "imageCLASS", "SELPHY", "imagePROGRAF", "imageRUNNER"] },
+          "aliases":    { "type": "array", "items": { "type": "string" },
+                          "description": "Alternate names the tool should match against." },
+          "supportUrl": { "type": "string", "format": "uri",
+                          "description": "Canon's official support / download page. Must be on a Canon domain." },
+          "driverUrl":  { "type": "string",
+                          "description": "Direct HTTPS URL to the Canon driver installer. Must be on canon.com or c-wss.com. Leave empty if unknown." },
+          "sha256":     { "type": "string", "pattern": "^([A-Fa-f0-9]{64})?$",
+                          "description": "SHA256 of the installer, if Canon publishes one. Empty string if unknown." },
+          "verified":   { "type": "boolean",
+                          "description": "True only when a maintainer has verified driverUrl is current and correct." }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
